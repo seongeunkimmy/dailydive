@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>DailyDive</title>
-  </head>
-  <body>
-    Hello world! This is DailyDive! 
-    this is develop branch! 
-  </body>
-</html>
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- Content specific to this page -->
+    <h1>Welcome to My Website</h1>
+    <p>This is the homepage.</p>
+    <button class="btn btn-primary">Click Me</button>
+</div>
+{% endblock %}
