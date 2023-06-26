@@ -1,12 +1,88 @@
 {% extends 'dailydive_webapp/index.html' %}
+{% load static %}
+
+{% block extra_style %}
+<style>
+    body {
+        background-image: url("{% static 'images/background.jpg' %}");
+        background-size: cover; /* 이미지가 전체 화면을 덮도록 */
+        background-repeat: no-repeat; /* 이미지가 반복되지 않도록 */
+    }
+
+    .mb-4 {
+        margin-bottom: 2rem; /* '4' is Bootstrap's scale. 1 = 0.25rem, 2 = 0.5rem, 3 = 1rem, etc. */
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-body h2 {
+        margin-bottom: 1rem;
+    }
+
+    .card-body p {
+        margin-bottom: 0.5rem;
+    }
+
+    .card-body .btn {
+        margin-top: 1rem;
+    }
+
+    .card-body .btn-group {
+        margin-top: 1rem;
+    }
+
+    .card-body .btn-group .btn {
+        margin-top: 0;
+    }
+
+    .card-body .btn-group .btn:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .card-body .btn-group .btn:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .card-body .btn-group .btn:not(:last-child):not(:first-child) {
+        border-radius: 0;
+    }
+
+</style>
+{% endblock extra_style %}
 
 
 {% block content %}
-   
 <div class="container">
     <!-- Content specific to this page -->
     <h1>솔루션 페이지 입니다</h1>
- 
+
+    <div class="row mb-4">
+        <!-- 일기 분석 시각화 영역 -->
+        <div class="col-12">
+            <h2>일기 분석 시각화 영역</h2>
+            <div class="card">
+                <div class="card-body">
+                    <!-- 내용 삽입 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- 솔루션 영역 -->
+        <div class="col-12">
+            <h2>솔루션 영역</h2>
+            <div class="card">
+                <div class="card-body">
+                    <!-- 내용 삽입 -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
