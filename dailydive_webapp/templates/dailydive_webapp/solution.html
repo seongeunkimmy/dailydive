@@ -1,60 +1,6 @@
 {% extends 'dailydive_webapp/index.html' %}
 {% load static %}
 
-{% block extra_style %}
-<style>
-    body {
-        background-image: url("{% static 'images/background.jpg' %}");
-        background-size: cover; /* 이미지가 전체 화면을 덮도록 */
-        background-repeat: no-repeat; /* 이미지가 반복되지 않도록 */
-    }
-
-    .mb-4 {
-        margin-bottom: 2rem; /* '4' is Bootstrap's scale. 1 = 0.25rem, 2 = 0.5rem, 3 = 1rem, etc. */
-    }
-
-    .card-body {
-        padding: 1rem;
-    }
-
-    .card-body h2 {
-        margin-bottom: 1rem;
-    }
-
-    .card-body p {
-        margin-bottom: 0.5rem;
-    }
-
-    .card-body .btn {
-        margin-top: 1rem;
-    }
-
-    .card-body .btn-group {
-        margin-top: 1rem;
-    }
-
-    .card-body .btn-group .btn {
-        margin-top: 0;
-    }
-
-    .card-body .btn-group .btn:first-child {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-
-    .card-body .btn-group .btn:last-child {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    .card-body .btn-group .btn:not(:last-child):not(:first-child) {
-        border-radius: 0;
-    }
-
-</style>
-{% endblock extra_style %}
-
-
 {% block content %}
 <div class="container">
     <!-- Content specific to this page -->
@@ -85,6 +31,5 @@
     </div>
 </div>
 {% endblock %}
-
 
 </html>
