@@ -9,3 +9,6 @@ def index(request):
 
 def home_view(request):
     return render(request, 'dailydive_webapp/home_view.html', {})
+
+def solution(request):
+    return render(request, 'dailydive_webapp/solution.html', {})
