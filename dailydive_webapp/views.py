@@ -12,3 +12,6 @@ def home_view(request):
 
 def solution(request):
     return render(request, 'dailydive_webapp/solution.html', {})
+
+def add_diary(request):
+    return render(request, 'dailydive_webapp/add_diary.html', {})
