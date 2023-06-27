@@ -15,3 +15,7 @@ def solution(request):
 
 def add_diary(request):
     return render(request, 'dailydive_webapp/add_diary.html', {})
+
+def activity(request):
+    return render(request, 'dailydive_webapp/activity.html', {})
+
