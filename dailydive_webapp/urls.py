@@ -6,6 +6,8 @@ app_name = 'dailydive_webapp'
 urlpatterns = [
     path('', views.home_view, name='home_view'),
     path('solution/', views.solution, name='solution'),
-    path('adddiary', views.add_diary, name='add_diary'),
+    path('adddiary/', views.add_diary, name='add_diary'),
     path('activity/', views.activity, name='activity'),
+
+    path('klue_predict/', views.klue_predict, name='klue_predict')
 ]

@@ -1,0 +1,29 @@
+<div style='text-align:center;'>
+
+  <h1 id='page_title'>
+    Sentiment analysis result - KLUE
+  </h1>
+
+  <hr>
+
+  <h2 class='semi-headline'>Target review : </h2><br>
+  <p class='result_p'>{{ target_sentence }}</p>
+
+  <hr>
+
+  <h2 class='semi-headline'>Analyzed sentiment value : </h2><br>
+
+  {% if '기쁨' in result %}
+    <p class='result_positive'>{{ result }}</p>
+  {% else %}
+    <p class='result_negative'>{{ result }}</p>
+  {% endif %}
+
+  <hr>
+  <h2 class='temp1'>예측 실행 전체 결과 : </h2><br>
+  <p class='temp2'>{{ temp }}</p>
+</div>
+
+<div id='nav_foot'>
+  <h2><a href="{% url 'dailydive_webapp:add_diary' %}">Return to previous page</a></h2>
+</div>
