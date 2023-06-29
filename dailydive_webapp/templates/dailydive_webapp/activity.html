@@ -5,43 +5,170 @@
   <div class="border border-white d-flex flex-column bd-highlight mb-3">
     
     <div class="p-2 bd-highlight">
-      <h1>Choose the one you prefer</h1>
-    </div>
-    
-    <div class="p-2 bd-highlight">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-          answer1
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-        <label class="form-check-label" for="flexRadioDefault2">
-          answer2
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-        <label class="form-check-label" for="flexRadioDefault2">
-          answer3
-        </label>
-      </div>
+      <h1>생활 활동 체크</h1>
     </div>
 
-    <div class="p-2 bd-highlight">
-      <input class="btn btn-primary" type="submit" value="Next">
-    </div>
+        <form class="form" id="myForm">
+          {% csrf_token %}
+          <div id="question-sections">
+              {% for question in questions %}
+                  <div class="card question-section" data-question-id="{{ question.id }}">
+                      <div class="card-body">
+                          <h2 class="card-title my-2">{{ question.question_text }}</h2>
+                          <h5 class="my-3">{{question.sub_question}}</h5>
+
+                          <div class="my-3">
+                          {% for choice in question.answer_choices %}
+                              <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ question.id }}_{{ forloop.counter }}" value="{{ choice }}">
+                                  <label class="form-check-label" for="{{ question.id }}_{{ forloop.counter }}">{{ choice }}</label>
+                              </div>
+                          {% endfor %}
+                        </div>
+
+                          {% if question.input_before %}
+                          <div class="input-text my-3">
+                            <span>{{question.input_before}}</span>
+                            <input class="form-text-input" type="text" name="text_input_{{ question.id }}_{{ forloop.counter }}">
+                            <span>{{question.input_after}}</span>
+                          </div>
+                          {% endif %}
+                        
+                          {% if question.additional %}
+                          <span>{{question.additional}}</span>
+                          {% endif %}
+                      </div>
+                  </div>
+          
+              {% endfor %}
+          </div>
+  
+          <div class="pagination flex flex-column justify-content-center align-items-center my-3">
+            <div>
+              <button type="button" class="btn btn-outline-light mx-3" id="previous-button">이전</button>
+              <button type="button" class="btn btn-outline-light" id="next-button">다음</button>
+            </div>
+          <div>
+            <button type="submit" class="btn btn-outline-light mt-3" id="submit-button" style="display: none;">제출하기</button>
+          </div>
+        </div>
+          
+      </form>
   </div>
-</div>
+    </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const questionSections = document.querySelectorAll('.question-section');
+  const previousButton = document.getElementById('previous-button');
+  const nextButton = document.getElementById('next-button');
+  const submitButton = document.getElementById('submit-button');
+  const form = document.getElementById('myForm');
+  let formValues = {};
 
+  let currentQuestionIndex = 0;
+  showCurrentQuestion();
+
+  previousButton.addEventListener('click', () => {
+    if (currentQuestionIndex > 0) {
+      saveCurrentQuestionValues();
+      currentQuestionIndex--;
+      showCurrentQuestion();
+    }
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (currentQuestionIndex < questionSections.length - 1) {
+      saveCurrentQuestionValues();
+      currentQuestionIndex++;
+      showCurrentQuestion();
+    }
+  });
+
+  submitButton.addEventListener('click', () => {
+    saveCurrentQuestionValues();
+    console.log('Form Values:', formValues);
+  });
+
+
+  function showCurrentQuestion() {
+    questionSections.forEach((section, index) => {
+      if (index === currentQuestionIndex) {
+        section.style.display = 'block';
+      } else {
+        section.style.display = 'none';
+      }
+    });
+
+    if (currentQuestionIndex === 0) {
+      previousButton.disabled = true;
+    } else {
+      previousButton.disabled = false;
+    }
+
+    if (currentQuestionIndex === questionSections.length - 1) {
+      nextButton.disabled = true;
+    } else {
+      nextButton.disabled = false;
+    }
+
+    if (currentQuestionIndex === questionSections.length - 1) {
+      submitButton.style.display = 'block';
+    } else {
+      submitButton.style.display = 'none';
+    }
+
+  }
+
+  function saveCurrentQuestionValues() {
+    const currentSection = questionSections[currentQuestionIndex];
+    const questionId = currentSection.dataset.questionId;
+
+    console.log('Question ID:', questionId);
+
+    // Retrieve values from radio inputs
+    const radioInputs = currentSection.querySelectorAll('input[type="radio"]:checked');
+    radioInputs.forEach((radioInput) => {
+      const name = radioInput.name;
+      const value = radioInput.value;
+      formValues[name] = value;
+    });
+
+    // Retrieve values from text inputs
+    const textInputs = currentSection.querySelectorAll('input[type="text"]');
+    textInputs.forEach((textInput) => {
+      const name = textInput.name;
+      const value = textInput.value;
+      formValues[name] = value;
+    });
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent form submission
+
+    // Optionally, you can reset the form after retrieving the values
+    form.reset();
+  });
+});
+
+
+      
+</script>
 <style>
   #input-div {
     color:white;
-    font-family: 'Gowun Dodum', sans-serif;
-    width:40%;
-    height:40%;
+    border-style: 2px black;
+    width: 50%;
+    height: 50%;
     
   }
+  .question-section:not(:first-child) {
+  display: none;
+}
+  .card-body {
+    background-color: #0c134f; 
+  }
+
+
+
 </style>
 {% endblock %}
