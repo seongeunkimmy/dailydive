@@ -7,8 +7,9 @@
     <!-- Content specific to this page -->
     <h1 style="width:50%; margin:auto; color:#FEFEFF">오늘 하루의 일기를 작성해 보세요!</h1>
     <hr/>
-    <form class="form-inline" style="width:100%" >
-        <p><textarea  class="form-control w-50 "  placeholder="오늘 있었던 일을 나눠주세요"></textarea></p><br>
+    <form class="form-inline" style="width:100%" method="POST"  action="{% url 'dailydive_webapp:solution' %}">
+        {% csrf_token %}
+        <p><textarea name="target_sentence" class="form-control w-50 "  placeholder="오늘 있었던 일을 나눠주세요"></textarea></p><br>
         <button type="submit" class="btn btn-outline-light  float-right">SUBMIT</button>
 
     </form>
