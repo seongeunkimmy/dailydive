@@ -30,7 +30,7 @@ def create_klue_model():
                             loss=tf.keras.losses.SparseCategoricalCrossentropy(),
                             metrics=['accuracy'])
 
-    sentiment_model.load_weights(filepath='C:/pycharm/dailydive/dailydive_project/models/best_model_val_adamw.h5')
+    sentiment_model.load_weights(filepath='./models/best_model_val_adamw.h5')
 
     return sentiment_model
 

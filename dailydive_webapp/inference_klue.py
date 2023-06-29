@@ -3,7 +3,6 @@ import numpy as np
 
 def predict_sentiment(sentence, tokenizer, model):
 
-
     seq_len = 128
 
     text=re.sub("[^\s0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]", "", sentence)
@@ -30,11 +29,14 @@ def predict_sentiment(sentence, tokenizer, model):
     # prediction
     prediction = model.predict(new_inputs)
     predicted_probability = np.round(np.max(prediction) * 100, 2)
+    temp = np.round(prediction * 100, 2)
+    prob = np.concatenate(temp).tolist()
+    print(prob)
     predicted_class = ['기쁨', '당황', '분노', '불안', '상처', '슬픔'][np.argmax(prediction, axis=1)[0]]
     result = "{}% 확률로 {} 감정입니다.".format(predicted_probability, predicted_class)
 
 
-    return result, prediction
+    return result, prob
 
 
 

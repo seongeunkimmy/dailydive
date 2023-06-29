@@ -1,29 +1,35 @@
-<div style='text-align:center;'>
+{% extends 'dailydive_webapp/index.html' %}
+{% load static %}
 
-  <h1 id='page_title'>
-    Sentiment analysis result - KLUE
-  </h1>
+{% block content %}
+<div class="container">
+    <!-- Content specific to this page -->
+    <h1 style="color:#FEFEFF">솔루션 페이지 입니다</h1>
 
-  <hr>
+    <div class="row mb-4">
+        <!-- 일기 분석 시각화 영역 -->
+        <div class="col-12">
+            <h2 style="color:#FEFEFF">일기 분석 시각화 영역</h2>
+            <div class="card" >
+                <div class="card-body">
+                      <img src="data:image/png;base64, {{ chart|safe }}" alt="" id="img">
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <h2 class='semi-headline'>Target review : </h2><br>
-  <p class='result_p'>{{ target_sentence }}</p>
-
-  <hr>
-
-  <h2 class='semi-headline'>Analyzed sentiment value : </h2><br>
-
-  {% if '기쁨' in result %}
-    <p class='result_positive'>{{ result }}</p>
-  {% else %}
-    <p class='result_negative'>{{ result }}</p>
-  {% endif %}
-
-  <hr>
-  <h2 class='temp1'>예측 실행 전체 결과 : </h2><br>
-  <p class='temp2'>{{ temp }}</p>
+    <div class="row">
+        <!-- 솔루션 영역 -->
+        <div class="col-12">
+            <h2 style="color:#FEFEFF">솔루션 영역</h2>
+            <div class="card">
+                <div class="card-body">
+                    <!-- 내용 삽입 -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
 
-<div id='nav_foot'>
-  <h2><a href="{% url 'dailydive_webapp:add_diary' %}">Return to previous page</a></h2>
-</div>
+</html>
