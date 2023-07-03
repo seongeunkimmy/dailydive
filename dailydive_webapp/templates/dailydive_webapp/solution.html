@@ -24,7 +24,10 @@
             <h2 style="color:#FEFEFF">솔루션 영역</h2>
             <div class="card">
                 <div class="card-body">
-                    <!-- 내용 삽입 -->
+                    {% csrf_token %}
+                    {% for i in selected_db %}
+                    <img src="{% static i.img_url %}">
+                        {% endfor %}
                 </div>
             </div>
         </div>
