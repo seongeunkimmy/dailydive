@@ -22,17 +22,119 @@
         <!-- 솔루션 영역 -->
         <div class="col-12">
             <h2 style="color:#FEFEFF">솔루션 영역</h2>
-            <div class="card">
-                <div class="card-body">
-                    {% csrf_token %}
-                    {% for i in selected_db %}
-                    <img src="{% static i.img_url %}">
-                        {% endfor %}
+
+            <div class='container'>
+                <div class='row'>  
+                    <div class="flip-card-3D-wrapper col-md-4">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class='card-body'> 
+                                <h4 class="text-center">Card title1</h4>
+                                <p>phrase1</p> 
+                                </div>  
+                            </div>
+                            <div class="flip-card-back">
+                               <div class='card-body'> 
+                                   <h4 class="text-center">More info</h4>
+                                   <p>phrase1</p>       
+                               </div>   
+                            </div>
+                        </div>
+                    </div>  
+                
+                    <div class="flip-card-3D-wrapper col-md-4">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class='card-body'> 
+                                    <h4 class="text-center">Card title2</h4>
+                                    <p>phrase2</p> 
+                                </div>  
+                            </div>
+                            <div class="flip-card-back">
+                                <div class='card-body'> 
+                                    <h4 class="text-center">More info</h4>
+                                    <p>phrase2</p>       
+                                </div>   
+                            </div>
+                        </div>
+                    </div> 
+                
+                    <div class="flip-card-3D-wrapper col-md-4">
+                        <div class="flip-card">
+                            <div class="flip-card-front">
+                                <div class='card-body'> 
+                                <h4 class="text-center">Card title3</h4>
+                                <p>phrase3</p> 
+                                </div>  
+                            </div>
+                            <div class="flip-card-back">
+                                <div class='card-body'> 
+                                    <h4 class="text-center">More info</h4>
+                                    <p>phrase3</p>       
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    const flipCardWrapAll = document.querySelector("#flip-card-wrap-all")
+    const cardsWrapper = document.querySelectorAll(".flip-card-3D-wrapper")
+    const cards = document.querySelectorAll(".flip-card")
+    let frontButtons = ""
+    let backButtons = ""
+
+    for (let i = 0; i < cardsWrapper.length; i++) {
+        frontButtons = cardsWrapper[i].querySelector(".flip-card-front")
+        frontButtons.style.visibility = "visible"
+        frontButtons.onclick = function() {
+            cards[i].classList.toggle('do-flip')
+            }
+    
+        backButtons = cardsWrapper[i].querySelector(".flip-card-back")
+        backButtons.style.visibility = "visible"
+        backButtons.onclick = function() {
+            cards[i].classList.toggle('do-flip')
+            }  
+    } 
+</script>
+
+<style>
+
+.flip-card-3D-wrapper {
+  width: 100%;
+  height: 100%;
+  max-width: 300px; 
+  perspective: 1000px;
+  margin: 10px auto;
+}
+
+.flip-card {
+  height: 100%;
+  transition: all 1s ease-in-out;
+  transform-style: preserve-3d;
+  height: 500px;
+}
+
+.do-flip {transform: rotateY(180deg);}
+
+.flip-card-front, .flip-card-back {
+  height: 100%;
+  position: relative;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  border:5px solid #E80088;
+}
+
+.flip-card-front {background: #E80088;color: white;}
+.flip-card-back {background: white;transform: rotateY(180deg);}
+.flip-card-back h4 {color: #E80088}
+</style>
 {% endblock %}
 
 </html>
