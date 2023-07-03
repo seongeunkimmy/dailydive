@@ -3,6 +3,7 @@ from django.conf import settings
 
 from . import inference_klue
 from .utils import get_chart
+from .models import solutions
 # from django.views.decorators.csrf import csrf_exempt
 # from django.utils.decorators import  method_decorator
 #
@@ -69,11 +70,23 @@ def solution(request):
     tokenizer = settings.TOKENIZER_KLUE
 
     result, temp = inference_klue.predict_sentiment(target_sentence, tokenizer, model)
+    print(result)
     chart = get_chart(temp)
-    context = {'target_sentence':target_sentence, 'result':result, 'chart':chart}
+    obj = solutions.objects.filter(sentiment=result).values()
+    context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db':obj}
     return render(request, 'dailydive_webapp/solution.html', context)
 
 
-
-
+# def klue_predict(request):
+#     target_sentence = request.POST['target_sentence']
+#     model = settings.MODEL_KLUE
+#     tokenizer = settings.TOKENIZER_KLUE
+#
+#     result, temp = inference_klue.predict_sentiment(target_sentence, tokenizer, model)
+#     print(result)
+#     chart = get_chart(temp)
+#     obj = solutions.objects.filter(sentiment=result).values()
+#     print(obj)
+#     context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db':obj}
+#     return render(request, 'dailydive_webapp/klue_predict.html', context)
 
