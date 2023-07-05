@@ -8,8 +8,9 @@
       <h1>생활 활동 체크</h1>
     </div>
 
-        <form class="form" id="myForm">
+        <form class="form" id="myForm" action="{% url 'dailydive_webapp:solution' %}" method="POST" >
           {% csrf_token %}
+        
           <div id="question-sections">
               {% for question in questions %}
                   <div class="card question-section" data-question-id="{{ question.id }}">
@@ -17,11 +18,14 @@
                           <h2 class="card-title my-2">{{ question.question_text }}</h2>
                           <h5 class="my-3">{{question.sub_question}}</h5>
 
+                            <!-- Add the hidden input field for CSRF token -->
+                          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
                           <div class="my-3">
                           {% for choice in question.answer_choices %}
                               <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ question.id }}_{{ forloop.counter }}" value="{{ choice }}">
-                                  <label class="form-check-label" for="{{ question.id }}_{{ forloop.counter }}">{{ choice }}</label>
+                                  <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ question.id }}_{{ forloop.counter }}" value="{{ choice.score }}">
+                                  <label class="form-check-label" for="{{ question.id }}_{{ forloop.counter }}">{{ choice.answer }}</label>
                               </div>
                           {% endfor %}
                         </div>
@@ -64,13 +68,14 @@
   const submitButton = document.getElementById('submit-button');
   const form = document.getElementById('myForm');
   let formValues = {};
+  let answer = []
 
   let currentQuestionIndex = 0;
   showCurrentQuestion();
 
   previousButton.addEventListener('click', () => {
     if (currentQuestionIndex > 0) {
-      saveCurrentQuestionValues();
+      saveCurrentAnswers();
       currentQuestionIndex--;
       showCurrentQuestion();
     }
@@ -78,15 +83,48 @@
 
   nextButton.addEventListener('click', () => {
     if (currentQuestionIndex < questionSections.length - 1) {
-      saveCurrentQuestionValues();
+      saveCurrentAnswers();
       currentQuestionIndex++;
       showCurrentQuestion();
     }
   });
 
   submitButton.addEventListener('click', () => {
-    saveCurrentQuestionValues();
+    saveCurrentAnswers();
     console.log('Form Values:', formValues);
+
+    const sleep = formValues.question_1 + formValues.text_input_1_1
+    const exercise = formValues.question_2 + formValues.text_input_2_2
+    const rest = formValues.question_3
+    const diet = formValues.question_4
+    const sns = formValues.question_5
+
+    answers = [sleep, exercise, rest, diet, sns];
+
+    // Send the answers to the server using Fetch API
+    const url = "{% url 'dailydive_webapp:solution' %}";
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    const data = JSON.stringify({ answers: answers });
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken 
+      },
+      body: data,
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the server
+        console.log(data);
+      })
+      .catch(error => {
+        // Handle any errors
+        console.error('Error:', error);
+      });
+
   });
 
 
@@ -119,33 +157,57 @@
 
   }
 
-  function saveCurrentQuestionValues() {
+  function saveCurrentAnswers() {
     const currentSection = questionSections[currentQuestionIndex];
     const questionId = currentSection.dataset.questionId;
-
-    console.log('Question ID:', questionId);
 
     // Retrieve values from radio inputs
     const radioInputs = currentSection.querySelectorAll('input[type="radio"]:checked');
     radioInputs.forEach((radioInput) => {
       const name = radioInput.name;
       const value = radioInput.value;
-      formValues[name] = value;
+
+      formValues[name] = parseInt(value);
     });
 
     // Retrieve values from text inputs
     const textInputs = currentSection.querySelectorAll('input[type="text"]');
     textInputs.forEach((textInput) => {
       const name = textInput.name;
-      const value = textInput.value;
-      formValues[name] = value;
+      let value = textInput.value;
+
+    
+      if (name === 'text_input_1_1') {
+      const sleepTime = parseFloat(value);
+  
+      if ( sleepTime >= 7 && sleepTime <= 9) {
+        value = '10';
+      } else if (sleepTime >= 6 && sleepTime < 7) {
+        value = '7'
+      } else if (sleepTime < 6 && sleepTime > 9) {
+        value = '3';
+      } 
+    }
+
+  
+    if (name === 'text_input_2_2') {
+      const exerciseTime = parseFloat(value);
+
+      if (exerciseTime < 15) {
+        value = '5';
+      } else if (exerciseTime >= 15 && exerciseTime < 30) {
+        value = '7';
+      } else if (exerciseTime >= 30) {
+        value = '10';
+      }
+    }
+
+      formValues[name] = parseInt(value);
     });
   }
 
   form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent form submission
-
-    // Optionally, you can reset the form after retrieving the values
+    event.preventDefault(); 
     form.reset();
   });
 });
