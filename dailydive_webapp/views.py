@@ -93,6 +93,9 @@ def activity(request):
         
 def solution(request):
 
+    
+
+
             if request.method == 'POST':
                 if request.content_type == 'application/json':
                     data = json.loads(request.body)
@@ -112,9 +115,8 @@ def solution(request):
                     print(result)
                     chart = get_bar_chart(temp)
                     obj = solutions.objects.filter(sentiment=result).values()
-                    context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db':obj}
+                    context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
                     return render(request, 'dailydive_webapp/solution.html', context)
-
 
 
 # def klue_predict(request):
@@ -129,4 +131,3 @@ def solution(request):
 #     print(obj)
 #     context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db':obj}
 #     return render(request, 'dailydive_webapp/klue_predict.html', context)
-
