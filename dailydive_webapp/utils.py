@@ -9,10 +9,13 @@ from matplotlib.spines import Spine
 from matplotlib.transforms import Affine2D
 import matplotlib.colors as mcolors
 from matplotlib import font_manager, rc # rc == run configure(configuration file) # 한글 폰트 세팅
+import seaborn as sns
 
 # # matplotlib의 한글문제를 해결
-font_name = font_manager.FontProperties(fname=r"C:/Windows/Fonts/malgun.ttf").get_name()
 
+# old_path = r"C:/Windows/Fonts/malgun.ttf"
+path = 'dailydive_webapp/static/dailydive_webapp/font/NanumGothic.ttf'
+font_name = font_manager.FontProperties(fname=path).get_name()
 # # font_name
 rc('font', family=font_name)
 
@@ -72,3 +75,35 @@ def get_chart(data):
     chart = get_graph()
 
     return chart
+
+def get_bar_chart(data):
+
+    labels = ['기쁨', '당황', '분노', '불안', '상처', '슬픔']
+
+    # my_palette = plt.cm.get_cmap("Set2", len(labels))
+    # color = my_palette(5)
+    #
+    sorted_data, sorted_labels = zip(*sorted(zip(data, labels), reverse=True))
+    # plt.figure(figsize=(5, 5))
+    # plt.barh(sorted_labels, sorted_data, color=color)
+
+    # 그래프 설정
+    sns.set(style="white")
+    plt.figure(figsize=(5, 5))
+
+    custom_palette = sns.color_palette('magma', 20)
+
+    # 순서 뒤집기
+    shifted_palette = custom_palette[2:]
+
+    # 수평 막대그래프 그리기
+    ax = sns.barplot(x=list(sorted_data), y=list(sorted_labels), palette=shifted_palette)
+
+    # 한글 폰트 적용
+    ax.set_xticklabels(ax.get_xticklabels(), fontproperties=font_name)
+    ax.set_yticklabels(ax.get_yticklabels(), fontproperties=font_name)
+
+    chart = get_graph()
+
+    return chart
+

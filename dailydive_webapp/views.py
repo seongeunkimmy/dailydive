@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 
 from . import inference_klue
-from .utils import get_chart
+from .utils import get_chart, get_bar_chart
 from .models import solutions
 # from django.views.decorators.csrf import csrf_exempt
 # from django.utils.decorators import  method_decorator
@@ -70,8 +70,7 @@ def solution(request):
     tokenizer = settings.TOKENIZER_KLUE
 
     result, temp = inference_klue.predict_sentiment(target_sentence, tokenizer, model)
-    print(result)
-    chart = get_chart(temp)
+    chart = get_bar_chart(temp)
     obj = solutions.objects.filter(sentiment=result).values()
     context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db':obj}
     return render(request, 'dailydive_webapp/solution.html', context)
