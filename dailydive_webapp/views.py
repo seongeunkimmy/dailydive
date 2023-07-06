@@ -15,7 +15,7 @@ from .models import solutions
 # @method_decorator(csrf_exempt, name='dispath')
 
 
-
+sentence = ''
 # Create your views here.
 def index(request):
     if request.method == "GET":
@@ -29,7 +29,10 @@ def home_view(request):
 #     return render(request, 'dailydive_webapp/solution.html', {})
 
 def add_diary(request):
-    return render(request, 'dailydive_webapp/add_diary.html', {})
+    sentence = request.POST.get('target_sentence')
+    print('add_diary sentence ', sentence)
+    request.session['sentence'] = sentence
+    return render(request, 'dailydive_webapp/add_diary.html',  {})
 
 def activity(request):
     questions = [
@@ -89,35 +92,28 @@ def activity(request):
         ]
     
     return render(request, 'dailydive_webapp/activity.html', {'questions': questions})
-        
-        
+
+
 def solution(request):
-
-    
-
-
-            if request.method == 'POST':
-                if request.content_type == 'application/json':
-                    data = json.loads(request.body)
-                    answers = data.get('answers', [])
-                    print(answers)
+    # if request.method == 'POST':
+        print(request.method)
+        if request.content_type == 'application/json':
+            data = json.loads(request.body)
+            answers = data.get('answers', [])
+            print('answer: ', answers)
 
 
-                    response_data = {'message': 'Answers received successfully'}
-                    return JsonResponse(response_data)
-            
-                else:
-                    target_sentence = request.POST['target_sentence']
-                    model = settings.MODEL_KLUE
-                    tokenizer = settings.TOKENIZER_KLUE
+        # target_sentence = request.POST['target_sentence']
+        target_sentence = request.session.get('sentence')
+        model = settings.MODEL_KLUE
+        tokenizer = settings.TOKENIZER_KLUE
 
-                    result, temp = inference_klue.predict_sentiment(target_sentence, tokenizer, model)
-                    print(result)
-                    chart = get_bar_chart(temp)
-                    obj = solutions.objects.filter(sentiment=result).values()
-                    context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
-                    return render(request, 'dailydive_webapp/solution.html', context)
-
+        result, temp = inference_klue.predict_sentiment(target_sentence, tokenizer, model)
+        print(result)
+        chart = get_bar_chart(temp)
+        obj = solutions.objects.filter(sentiment=result).values()
+        context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
+        return render(request, 'dailydive_webapp/solution.html', context)
 
 # def klue_predict(request):
 #     target_sentence = request.POST['target_sentence']

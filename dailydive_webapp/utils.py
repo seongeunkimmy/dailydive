@@ -30,7 +30,7 @@ def get_graph():
     return graph
 
 def get_chart(data):
-    labels = ['기쁨', '당황', '분노', '불안', '상처', '슬픔']
+    labels = ['수면', '운동', '휴식', '식사', 'SNS']
     num_labels = len(labels)
 
     data += data[:1]
@@ -51,7 +51,7 @@ def get_chart(data):
     ax.tick_params(axis='x')
 
     ax.set_rlabel_position(0)
-    plt.yticks([20, 40, 60, 80], ["20", "40", "60", "80"], color="black", size=10)
+    plt.yticks([5, 10, 15, 20], ["5", "10", "15", "20"], color="black", size=10)
     plt.ylim(0, 100)
 
     ax.plot(angles, data, color=color, linewidth=1, linestyle='solid')
@@ -76,34 +76,37 @@ def get_chart(data):
 
     return chart
 
-def get_bar_chart(data):
 
+def get_bar_chart(data):
     labels = ['기쁨', '당황', '분노', '불안', '상처', '슬픔']
 
     # my_palette = plt.cm.get_cmap("Set2", len(labels))
     # color = my_palette(5)
+    color=['#ccc9dc', '#7B788C', '#324a5f', '#1b2a41', '#0c1821', '#0f0f0f']
     #
-    sorted_data, sorted_labels = zip(*sorted(zip(data, labels), reverse=True))
-    # plt.figure(figsize=(5, 5))
-    # plt.barh(sorted_labels, sorted_data, color=color)
-
-    # 그래프 설정
-    sns.set(style="white")
+    sorted_data, sorted_labels = zip(*sorted(zip(data, labels), reverse=False))
     plt.figure(figsize=(5, 5))
+    plt.barh(sorted_labels, sorted_data, color=color)
 
-    custom_palette = sns.color_palette('magma', 20)
-
-    # 순서 뒤집기
-    shifted_palette = custom_palette[2:]
-
-    # 수평 막대그래프 그리기
-    ax = sns.barplot(x=list(sorted_data), y=list(sorted_labels), palette=shifted_palette)
-
-    # 한글 폰트 적용
-    ax.set_xticklabels(ax.get_xticklabels(), fontproperties=font_name)
-    ax.set_yticklabels(ax.get_yticklabels(), fontproperties=font_name)
+    # # 그래프 설정
+    # sns.set(style="white")
+    # plt.figure(figsize=(5, 5))
+    #
+    # custom_palette = sns.color_palette('magma', 20)
+    #
+    # # 순서 뒤집기
+    # shifted_palette = custom_palette[2:]
+    #
+    # # 수평 막대그래프 그리기
+    # ax = sns.barplot(x=list(sorted_data), y=list(sorted_labels), palette=shifted_palette)
+    #
+    # # 한글 폰트 적용
+    # ax.set_xticklabels(ax.get_xticklabels(), fontproperties=font_name)
+    # ax.set_yticklabels(ax.get_yticklabels(), fontproperties=font_name)
 
     chart = get_graph()
 
     return chart
+
+
 

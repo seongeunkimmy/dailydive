@@ -7,14 +7,30 @@
     <!-- Content specific to this page -->
     <h1 style="width:50%; margin:auto; color:#FEFEFF">오늘 하루의 일기를 작성해 보세요!</h1>
     <hr/>
-    <form class="form-inline" style="width:100%" method="POST"  action="{% url 'dailydive_webapp:solution' %}">
+    <form id="myForm" class="form-inline" style="width:100%" method="POST" action="{% url 'dailydive_webapp:add_diary' %}" >
         {% csrf_token %}
         <p><textarea name="target_sentence" class="form-control w-50 "  placeholder="오늘 있었던 일을 나눠주세요"></textarea></p><br>
-        <button type="submit" class="btn btn-outline-light  float-right">SUBMIT</button>
+        <button type="button" class="btn btn-outline-light  float-right"  onclick="submitForm()">SUBMIT</button>
 
     </form>
 
 </div>
+
+<script>
+    function submitForm() {
+        var form = document.getElementById("myForm");
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'dailydive_webapp:add_diary' %}");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                window.location.href = "{% url 'dailydive_webapp:activity' %}";
+            }
+        };
+        xhr.send(formData);
+    }
+</script>
 
 <style>
 #input-div{
