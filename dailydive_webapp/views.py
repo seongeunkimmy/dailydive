@@ -56,8 +56,8 @@ def activity(request):
                 'input_after': '분 정도 운동했어요.',
                 'additional': '*고강도: 달리기, 크로스핏, 인터벌 트레이닝 / *적당한 강도: 빨리 걷기, 사이클링, 배드민턴',
                 'answer_choices': [
-                                {'answer':'고강도*로 평소보다 숨이 훨씬 많이 찼어요.', 'score' : 10 }, 
-                                {'answer': '적당한 강도*로 평소보다 숨이 조금 더 찼어요.', 'score' : 7}, 
+                                {'answer':'고강도로 평소보다 숨이 훨씬 많이 찼어요.', 'score' : 10 }, 
+                                {'answer': '적당한 강도로 평소보다 숨이 조금 더 찼어요.', 'score' : 7}, 
                                 {'answer': '아니요, 오늘은 운동 안했어요.', 'score' : 0}
                                 ],
             },
@@ -67,7 +67,7 @@ def activity(request):
                 'answer_choices': [
                                 {'answer': '네, 충분히 쉬면서 하루를 보내 개운했어요.', 'score' : 20 }, 
                                 {'answer': '적당히 쉬어서 컨디션이 괜찮아요.', 'score' : 15}, 
-                                {'answer': '아니요, 바바써 못 쉬었더니 많이 피곤하네요.', 'score' : 10}
+                                {'answer': '아니요, 바빠서 못 쉬었더니 많이 피곤하네요.', 'score' : 10}
                                 ],
             },
             {
@@ -91,19 +91,24 @@ def activity(request):
             },
         ]
     
-    return render(request, 'dailydive_webapp/activity.html', {'questions': questions})
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        answers = data.get('answers', [])
+        print(answers)   
+        request.session['answers'] = answers
+
+        response_data = {'message': 'Answers received successfully'}
+        return JsonResponse(response_data)
+    else:
+        return render(request, 'dailydive_webapp/activity.html', {'questions': questions})
 
 
 def solution(request):
-    # if request.method == 'POST':
-        print(request.method)
-        if request.content_type == 'application/json':
-            data = json.loads(request.body)
-            answers = data.get('answers', [])
-            print('answer: ', answers)
 
+        data = request.session.get('answers')
+        print(data)
+        act_chart = get_chart(data)
 
-        # target_sentence = request.POST['target_sentence']
         target_sentence = request.session.get('sentence')
         model = settings.MODEL_KLUE
         tokenizer = settings.TOKENIZER_KLUE
@@ -112,7 +117,7 @@ def solution(request):
         print(result)
         chart = get_bar_chart(temp)
         obj = solutions.objects.filter(sentiment=result).values()
-        context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
+        context = {'target_sentence':target_sentence, 'result':result, 'chart':chart,'act_chart': act_chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
         return render(request, 'dailydive_webapp/solution.html', context)
 
 # def klue_predict(request):

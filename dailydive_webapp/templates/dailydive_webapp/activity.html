@@ -5,7 +5,7 @@
   <div class="border border-white d-flex flex-column bd-highlight mb-3">
     
     <div class="p-2 bd-highlight">
-      <h1>생활 활동 체크</h1>
+      <h1>생활 활동 체크 ✅</h1>
     </div>
 
         <form class="form" id="myForm" action="{% url 'dailydive_webapp:activity' %}" method="POST" >
@@ -49,11 +49,11 @@
   
           <div class="pagination flex flex-column justify-content-center align-items-center my-3">
             <div>
-              <button type="button" class="btn btn-outline-light mx-3" id="previous-button">이전</button>
-              <button type="button" class="btn btn-outline-light" id="next-button">다음</button>
+              <button type="button" class="btn btn-outline-light mx-3" id="previous-button">〈</button>
+              <button type="button" class="btn btn-outline-light mx-3" id="next-button">〉</button>
             </div>
           <div>
-            <button type="button" class="btn btn-outline-light mt-3" id="submit-button" style="display: none;" onclick="location.href={% url 'dailydive_webapp:solution' %}">제출하기</button>
+            <button type="button" class="btn btn-outline-light mt-3 custom-btn" id="submit-button" style="display: none;">결과 보기</button>
           </div>
         </div>
           
@@ -117,11 +117,9 @@
     })
       .then(response => response.json())
       .then(data => {
-        // Handle the response from the server
         console.log(data);
       })
       .catch(error => {
-        // Handle any errors
         console.error('Error:', error);
       });
       window.location.href = "{% url 'dailydive_webapp:solution' %}";
@@ -230,6 +228,9 @@
     background-color: #0c134f; 
   }
 
+  .custom-btn {
+    width: 200px;
+  }
 
 
 </style>
