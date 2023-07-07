@@ -7,7 +7,7 @@ django.setup()
 
 from dailydive_webapp.models import solutions
 
-f = open(r"C:\Users\jyoo7\Downloads\dailydive_solution.csv", 'r', encoding='utf-8-sig')
+f = open(r"./dailydive_solution.csv", 'r', encoding='utf-8-sig')
 info = []
 
 rdr = csv.reader(f)
