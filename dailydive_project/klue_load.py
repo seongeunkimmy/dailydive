@@ -25,12 +25,12 @@ def create_klue_model():
                                             kernel_initializer=tf.keras.initializers.he_uniform())(dropout)
     sentiment_model = tf.keras.Model([input_ids_layer, attention_masks_layer, segments_layer], sentiment_layer)
 
-    optimizer = tf.keras.optimizers.AdamW(learning_rate=3e-5)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=5e-5)
     sentiment_model.compile(optimizer=optimizer,
                             loss=tf.keras.losses.SparseCategoricalCrossentropy(),
                             metrics=['accuracy'])
 
-    sentiment_model.load_weights(filepath='./models/best_model_val_adamw.h5')
+    sentiment_model.load_weights(filepath='./models/best_model_val.h5')
 
     return sentiment_model
 

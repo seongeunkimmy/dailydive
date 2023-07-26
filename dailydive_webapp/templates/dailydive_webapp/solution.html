@@ -5,12 +5,25 @@
 <div class="container">
     <!-- Content specific to this page -->
  
-    <div class="row mb-4">
+    <div class="row my-4">
         <!-- 일기 분석 시각화 영역 -->
-        <div class="col-12 my-3">
-            <h2 class="my-3 text-white">분석 결과</h2>
-            <div class="card" >
-                <div class="card-body graph d-flex justify-content-center align-items-center">
+        <h2 class="my-3 text-white no-padding">🌊 다이브님의 심해 </h2>
+        <div class="summary text-white d-flex">
+      
+            <div class="d-flex container-fluid flex-column d-flex justify-content-center align-items-center">
+                <h5 class="align-self-start">오늘의 감정</h5>
+                <div class="result border border-3 rounded rounded-circle d-flex justify-content-center align-items-center">{{result}}</div>
+            </div>
+           <div class="d-flex container-fluid flex-column d-flex justify-content-center align-items-center">
+            <h5 class="align-self-start">생활 활동 점수</h5>
+            <div class="score border border-3 rounded rounded-circle d-flex justify-content-center align-items-center">{{score}}</div>
+           </div>
+          
+        </div>
+        <div class="col-12 my-4">
+            <h3 class="my-5 text-white"> 감정 분석 결과 📈 </h3>
+            <div class="card">
+                <div class="card-body graph p-2 d-flex justify-content-center align-items-center">
                       <img src="data:image/png;base64, {{ chart|safe }}" alt="" id="img">
                       <img src="data:image/png;base64, {{ act_chart|safe }}" alt="" id="img">
                 </div>
@@ -20,9 +33,9 @@
   
     <div class="row mb-4">
         <!-- 솔루션 영역 -->
-        <div class="col-12">
-            <h2 style="color:#FEFEFF">솔루션 추천</h2>
-            <div class='container'>
+        <div class="col-12 my-4">
+            <h3 class="my-5 text-white"> 솔루션 추천 🚀</h3>
+            <div class='container my-3'>
                 <div class='row'>
                     <div class="flip-card-3D-wrapper col-md-4">
                         <div class="flip-card">
@@ -110,9 +123,41 @@
 </script>
 
 <style>
+.no-padding {
+      margin: 0;
+    }
+
+.summary {
+    width: 100%;
+    height: 350px;
+}
+
+.card {
+    background-color: #141033;
+}
 
 .graph {
     background-color: #141033;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(164, 141, 141, 0.5),  0 -4px 6px rgba(164, 141, 141, 0.5);
+}
+
+.result {
+    width: 200px;
+    height: 200px;
+    background-color: #5C469C;
+    font-size: 35px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(164, 141, 141, 0.5),  0 -4px 6px rgba(164, 141, 141, 0.5);
+}
+
+.score {
+    width: 200px;
+    height: 200px;
+    background-color: #2ad8b9;
+    font-size: 35px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(164, 141, 141, 0.5),  0 -4px 6px rgba(164, 141, 141, 0.5);
 }
 
 .image {
@@ -137,6 +182,10 @@
   /* height: 500px; */
 }
 
+.flip-card:hover {
+    cursor: pointer;
+}
+
 .do-flip {transform: rotateY(180deg);}
 
 .flip-card-front, .flip-card-back {
@@ -146,6 +195,7 @@
   backface-visibility: hidden;
   border-radius: 10px;
   border:5px solid #E80088;
+  box-shadow: 0 0 10px 5px #FFC0CB;
 }
 
 .flip-card-front {background: #E80088;color: white;}

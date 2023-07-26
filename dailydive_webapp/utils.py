@@ -87,7 +87,7 @@ def get_bar_chart(data):
     plt.rcParams['ytick.color'] = 'white'
   
     sorted_data, sorted_labels = zip(*sorted(zip(data, labels), reverse=False))
-    plt.figure(figsize=(5, 5))
+    plt.figure(figsize=(6, 5))
     plt.barh(sorted_labels, sorted_data, color=color, height=0.5)
     plt.xticks(ticks=[])
 
