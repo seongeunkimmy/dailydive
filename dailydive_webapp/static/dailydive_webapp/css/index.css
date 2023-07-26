@@ -3,6 +3,7 @@
 /* Box-sizing */
 * {
     box-sizing: border-box;
+
   }
   
   /* Font & background-color */
@@ -10,7 +11,7 @@
     font-family: 'Gowun Dodum', Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
-    background-color: #0c134f; 
+    background-color: #060a31;
   }
-  
+
   

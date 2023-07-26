@@ -1,61 +1,70 @@
 {% extends 'dailydive_webapp/index.html' %}
 
 {% block content %}
-<div class="position-absolute top-50 start-50 translate-middle"  id="input-div">
-  <div class="border border-white d-flex flex-column bd-highlight mb-3">
+<div class="my-4 text-white bd-highlight d-flex justify-content-center align-items-center">
+  <h1 class="mt-5">생활 활동 체크 ✅</h1>
+</div>
+<div class="position-absolute top-50 start-50 translate-middle "  id="input-div">
+  <div class="d-flex flex-column bd-highlight mb-3">
     
-    <div class="p-2 bd-highlight">
-      <h1>생활 활동 체크 ✅</h1>
-    </div>
+   
 
         <form class="form" id="myForm" action="{% url 'dailydive_webapp:activity' %}" method="POST" >
           {% csrf_token %}
         
           <div id="question-sections">
               {% for question in questions %}
-                  <div class="card question-section" data-question-id="{{ question.id }}">
-                      <div class="card-body">
-                          <h2 class="card-title my-2">{{ question.question_text }}</h2>
-                          <h5 class="my-3">{{question.sub_question}}</h5>
-
+                  <div class="card question-section my-3 no-border" data-question-id="{{ question.id }}">
+                      <div class="card-body p-4 shadow-4 d-flex flex-column">
+                   
+                        <div class="mb-3 mx-3">
+                          <h2 class="card-title">{{ question.question_text }}</h2>
+                          <h5>{{question.sub_question}}</h5>
+                        </div>
                             <!-- Add the hidden input field for CSRF token -->
+                          <div class="mb-3 mx-3">
                           <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
                           <div class="my-3">
                           {% for choice in question.answer_choices %}
+                          <label class="form-check-label my-2 px-3 py-2 border border-1 rounded rounded-pill d-flex flex-column" for="{{ question.id }}_{{ forloop.counter }}">
                               <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ question.id }}_{{ forloop.counter }}" value="{{ choice.score }}">
-                                  <label class="form-check-label" for="{{ question.id }}_{{ forloop.counter }}">{{ choice.answer }}</label>
+                              <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ question.id }}_{{ forloop.counter }}" value="{{ choice.score }}">
+                              <span>{{ choice.answer }}</span>
                               </div>
+                            </label>
                           {% endfor %}
                         </div>
 
                           {% if question.input_before %}
-                          <div class="input-text my-3">
+                          <div class="input-text">
                             <span>{{question.input_before}}</span>
-                            <input class="form-text-input" type="text" name="text_input_{{ question.id }}_{{ forloop.counter }}">
+                            <input class="form-text-input rounded rounded-pill my-2 px-3" type="text" name="text_input_{{ question.id }}_{{ forloop.counter }}">
                             <span>{{question.input_after}}</span>
                           </div>
                           {% endif %}
-                        
-                          {% if question.additional %}
-                          <span>{{question.additional}}</span>
-                          {% endif %}
-                      </div>
+                        </div>
+                      
+                      {% if question.additional %}
+                      <span>{{question.additional}}</span>
+                      {% endif %}
+                    </div>
                   </div>
           
               {% endfor %}
+              <div class="pagination flex flex-column justify-content-center align-items-center my-5">
+                <div>
+                  <button type="button" class="btn btn-outline-light btn_left mx-3" id="previous-button">〈</button>
+                  <button type="button" class="btn btn-outline-light btn_right mx-3" id="next-button">〉</button>
+                </div>
+              <div class="mt-3">
+                <button type="button" class="btn btn-outline-light rounded rounded-pill mt-3 custom-btn bold-text" id="submit-button" style="display: none;">결과 보기</button>
+              </div>
+            </div>
+        
           </div>
   
-          <div class="pagination flex flex-column justify-content-center align-items-center my-3">
-            <div>
-              <button type="button" class="btn btn-outline-light mx-3" id="previous-button">〈</button>
-              <button type="button" class="btn btn-outline-light mx-3" id="next-button">〉</button>
-            </div>
-          <div>
-            <button type="button" class="btn btn-outline-light mt-3 custom-btn" id="submit-button" style="display: none;">결과 보기</button>
-          </div>
-        </div>
+       
           
       </form>
   </div>
@@ -216,20 +225,72 @@
 <style>
   #input-div {
     color:white;
-    border-style: 2px black;
     width: 50%;
     height: 50%;
-    
   }
+
   .question-section:not(:first-child) {
   display: none;
 }
   .card-body {
-    background-color: #0c134f; 
+    background-color: #141033;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(164, 141, 141, 0.5),  0 -4px 6px rgba(164, 141, 141, 0.5); /* Adjust the alpha value as needed */
+}
+/* #141033; */
+
+  .form-check-label{
+  background-color: #10041c;
+
+  }
+  .form-check-label:hover {
+  cursor: pointer;
+  background-color: #5C469C;
+  }
+  
+
+  .no-border {
+    border: none;
+    background-color: #141033;
   }
 
+  .form-text-input {
+    width: 100px;
+    background-color: #10041c;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    color: white;
+  }
+
+  .form-text-input:hover {
+    cursor: pointer;
+  }
+ 
+  .btn_left {
+    width: 50px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+
+  .btn_right {
+    width: 50px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
   .custom-btn {
     width: 200px;
+    color: #D4ADFC;
+    background-color: #5C469C;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .custom-btn:hover {
+    background-color: #D4ADFC;
+    border-color: #5C469C;
+    color: #10041c;
   }
 
 

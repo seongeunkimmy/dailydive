@@ -94,7 +94,6 @@ def activity(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         answers = data.get('answers', [])
-        print(answers)   
         request.session['answers'] = answers
 
         response_data = {'message': 'Answers received successfully'}
@@ -106,7 +105,8 @@ def activity(request):
 def solution(request):
 
         data = request.session.get('answers')
-        print(data)
+        data_int = [int(num) if num is not None else 0 for num in data]
+        score = sum(data_int)
         act_chart = get_chart(data)
 
         target_sentence = request.session.get('sentence')
@@ -114,10 +114,9 @@ def solution(request):
         tokenizer = settings.TOKENIZER_KLUE
 
         result, temp = inference_klue.predict_sentiment(target_sentence, tokenizer, model)
-        print(result)
         chart = get_bar_chart(temp)
         obj = solutions.objects.filter(sentiment=result).values()
-        context = {'target_sentence':target_sentence, 'result':result, 'chart':chart,'act_chart': act_chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
+        context = {'target_sentence':target_sentence, 'result':result, 'score': score, 'chart':chart,'act_chart': act_chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
         return render(request, 'dailydive_webapp/solution.html', context)
 
 # def klue_predict(request):
