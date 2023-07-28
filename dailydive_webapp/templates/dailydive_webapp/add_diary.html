@@ -1,0 +1,72 @@
+{% extends 'dailydive_webapp/index.html' %}
+
+
+{% block content %}
+
+<div style='text-align:center;margin:auto;' class="position-absolute top-50 start-50 translate-middle" id="input-div">
+    <!-- Content specific to this page -->
+    <div class="mb-3 text-white bd-highlight d-flex justify-content-center align-items-center">
+        <h1>오늘 하루의 감정을 일기로 써보세요 📝</h1>
+      </div>
+    <form id="myForm" class="form-inline" style="width:100%" method="POST" action="{% url 'dailydive_webapp:add_diary' %}" >
+        {% csrf_token %}
+        <p><textarea name="target_sentence" class="form-control w-50 input"  placeholder="오늘 무슨 일이 있었나요? 기분은 어땠나요?"></textarea></p><br>
+        <button type="button" class="btn btn-outline-light  float-right custom-btn rounded rounded-pill"  onclick="submitForm()">감정 보내기</button>
+
+    </form>
+
+</div>
+
+<script>
+    function submitForm() {
+        var form = document.getElementById("myForm");
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'dailydive_webapp:add_diary' %}");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                window.location.href = "{% url 'dailydive_webapp:activity' %}";
+            }
+        };
+        xhr.send(formData);
+    }
+</script>
+
+<style>
+#input-div{
+    vertical-align: middle;
+    font-family: 'Gowun Dodum', sans-serif;
+    width:100%;
+  
+ }
+ .input {
+    border-radius: 1px 60px 1px 60px;
+   
+ }
+ textarea {
+    margin:auto;
+	width:10%;
+    height: 20.25em;
+    border: none;
+    resize: none;
+  
+  }
+
+
+  .custom-btn {
+    width: 200px;
+    color: #D4ADFC;
+    background-color: #5C469C;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .custom-btn:hover {
+    background-color: #D4ADFC;
+    border-color: #5C469C;
+    color: #10041c;
+  }
+  
+</style>
+{% endblock %}

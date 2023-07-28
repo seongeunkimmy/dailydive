@@ -1,0 +1,23 @@
+{% load bootstrap5 %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DailyDive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <link rel="stylesheet" href="{% static 'dailydive_webapp/css/index.css' %}">
+</head>
+<body>
+    <!-- Common HTML content -->
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+
+</html>

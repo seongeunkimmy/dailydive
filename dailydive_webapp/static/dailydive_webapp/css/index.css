@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+/* Box-sizing */
+* {
+    box-sizing: border-box;
+
+  }
+  
+  /* Font & background-color */
+  body {
+    font-family: 'Gowun Dodum', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: #060a31;
+  }
+
+  

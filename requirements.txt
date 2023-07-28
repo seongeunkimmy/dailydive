@@ -1,5 +1,13 @@
 asgiref==3.7.2
+beautifulsoup4==4.12.2
 Django==3.2
+django-bootstrap-v5==1.0.11
 pytz==2023.3
+soupsieve==2.4.1
 sqlparse==0.4.4
 typing_extensions==4.6.3
+matplotlib==3.2.2
+tensorflow==2.12.0
+torch==2.0.1
+transformers==4.30.2
+seaborn==0.12.2

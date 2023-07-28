@@ -1,0 +1,294 @@
+{% extends 'dailydive_webapp/index.html' %}
+
+{% block content %}
+<div class="my-4 text-white bd-highlight d-flex justify-content-center align-items-center">
+  <h1 class="mt-5">생활 활동 체크 ✅</h1>
+</div>
+<div class="position-absolute top-50 start-50 translate-middle "  id="input-div">
+  <div class="d-flex flex-column bd-highlight mb-3">
+    
+   
+
+        <form class="form" id="myForm" action="{% url 'dailydive_webapp:activity' %}" method="POST" >
+          {% csrf_token %}
+        
+          <div id="question-sections">
+              {% for question in questions %}
+                  <div class="card question-section my-3 no-border" data-question-id="{{ question.id }}">
+                      <div class="card-body p-4 shadow-4 d-flex flex-column">
+                   
+                        <div class="mb-3 mx-3">
+                          <h2 class="card-title">{{ question.question_text }}</h2>
+                          <h5>{{question.sub_question}}</h5>
+                        </div>
+                            <!-- Add the hidden input field for CSRF token -->
+                          <div class="mb-3 mx-3">
+                          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                          <div class="my-3">
+                          {% for choice in question.answer_choices %}
+                          <label class="form-check-label my-2 px-3 py-2 border border-1 rounded rounded-pill d-flex flex-column" for="{{ question.id }}_{{ forloop.counter }}">
+                              <div class="form-check">
+                              <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ question.id }}_{{ forloop.counter }}" value="{{ choice.score }}">
+                              <span>{{ choice.answer }}</span>
+                              </div>
+                            </label>
+                          {% endfor %}
+                        </div>
+
+                          {% if question.input_before %}
+                          <div class="input-text">
+                            <span>{{question.input_before}}</span>
+                            <input class="form-text-input rounded rounded-pill my-2 px-3" type="text" name="text_input_{{ question.id }}_{{ forloop.counter }}">
+                            <span>{{question.input_after}}</span>
+                          </div>
+                          {% endif %}
+                        </div>
+                      
+                      {% if question.additional %}
+                      <span>{{question.additional}}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+          
+              {% endfor %}
+              <div class="pagination flex flex-column justify-content-center align-items-center my-5">
+                <div>
+                  <button type="button" class="btn btn-outline-light btn_left mx-3" id="previous-button">〈</button>
+                  <button type="button" class="btn btn-outline-light btn_right mx-3" id="next-button">〉</button>
+                </div>
+              <div class="mt-3">
+                <button type="button" class="btn btn-outline-light rounded rounded-pill mt-3 custom-btn bold-text" id="submit-button" style="display: none;">결과 보기</button>
+              </div>
+            </div>
+        
+          </div>
+  
+       
+          
+      </form>
+  </div>
+    </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const questionSections = document.querySelectorAll('.question-section');
+  const previousButton = document.getElementById('previous-button');
+  const nextButton = document.getElementById('next-button');
+  const submitButton = document.getElementById('submit-button');
+  const form = document.getElementById('myForm');
+  let formValues = {};
+  let answer = []
+
+  let currentQuestionIndex = 0;
+  showCurrentQuestion();
+
+  previousButton.addEventListener('click', () => {
+    if (currentQuestionIndex > 0) {
+      saveCurrentAnswers();
+      currentQuestionIndex--;
+      showCurrentQuestion();
+    }
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (currentQuestionIndex < questionSections.length - 1) {
+      saveCurrentAnswers();
+      currentQuestionIndex++;
+      showCurrentQuestion();
+    }
+  });
+
+  submitButton.addEventListener('click', () => {
+    saveCurrentAnswers();
+
+    const sleep = formValues.question_1 + formValues.text_input_1_1
+    const exercise = formValues.question_2 + formValues.text_input_2_2
+    const rest = formValues.question_3
+    const diet = formValues.question_4
+    const sns = formValues.question_5
+
+    answers = [sleep, exercise, rest, diet, sns];
+
+    // Send the answers to the server
+    const url = "{% url 'dailydive_webapp:activity' %}";
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    const data = JSON.stringify({ answers: answers });
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken 
+      },
+      body: data,
+    })
+      .then(response => response.json())
+      .catch(error => {
+        console.error('Error:', error);
+      });
+      window.location.href = "{% url 'dailydive_webapp:solution' %}";
+  });
+
+
+  function showCurrentQuestion() {
+    questionSections.forEach((section, index) => {
+      if (index === currentQuestionIndex) {
+        section.style.display = 'block';
+      } else {
+        section.style.display = 'none';
+      }
+    });
+
+    if (currentQuestionIndex === 0) {
+      previousButton.disabled = true;
+    } else {
+      previousButton.disabled = false;
+    }
+
+    if (currentQuestionIndex === questionSections.length - 1) {
+      nextButton.disabled = true;
+    } else {
+      nextButton.disabled = false;
+    }
+
+    if (currentQuestionIndex === questionSections.length - 1) {
+      submitButton.style.display = 'block';
+    } else {
+      submitButton.style.display = 'none';
+    }
+
+  }
+
+  function saveCurrentAnswers() {
+    const currentSection = questionSections[currentQuestionIndex];
+    const questionId = currentSection.dataset.questionId;
+
+    // Retrieve values from radio inputs
+    const radioInputs = currentSection.querySelectorAll('input[type="radio"]:checked');
+    radioInputs.forEach((radioInput) => {
+      const name = radioInput.name;
+      const value = radioInput.value;
+
+      formValues[name] = parseInt(value);
+    });
+
+    // Retrieve values from text inputs
+    const textInputs = currentSection.querySelectorAll('input[type="text"]');
+    textInputs.forEach((textInput) => {
+      const name = textInput.name;
+      let value = textInput.value;
+
+    
+      if (name === 'text_input_1_1') {
+      const sleepTime = parseFloat(value);
+  
+      if ( sleepTime >= 7 && sleepTime <= 9) {
+        value = '10';
+      } else if (sleepTime >= 6 && sleepTime < 7) {
+        value = '7'
+      } else if (sleepTime < 6 && sleepTime > 9) {
+        value = '3';
+      } 
+    }
+
+  
+    if (name === 'text_input_2_2') {
+      const exerciseTime = parseFloat(value);
+
+      if (exerciseTime < 15) {
+        value = '5';
+      } else if (exerciseTime >= 15 && exerciseTime < 30) {
+        value = '7';
+      } else if (exerciseTime >= 30) {
+        value = '10';
+      }
+    }
+
+      formValues[name] = parseInt(value);
+    });
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault(); 
+    form.reset();
+  });
+});
+
+
+      
+</script>
+<style>
+  #input-div {
+    color:white;
+    width: 50%;
+    height: 50%;
+  }
+
+  .question-section:not(:first-child) {
+  display: none;
+}
+  .card-body {
+    background-color: #141033;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(164, 141, 141, 0.5),  0 -4px 6px rgba(164, 141, 141, 0.5); /* Adjust the alpha value as needed */
+}
+/* #141033; */
+
+  .form-check-label{
+  background-color: #10041c;
+
+  }
+  .form-check-label:hover {
+  cursor: pointer;
+  background-color: #5C469C;
+  }
+  
+
+  .no-border {
+    border: none;
+    background-color: #141033;
+  }
+
+  .form-text-input {
+    width: 100px;
+    background-color: #10041c;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    color: white;
+  }
+
+  .form-text-input:hover {
+    cursor: pointer;
+  }
+ 
+  .btn_left {
+    width: 50px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+
+  .btn_right {
+    width: 50px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  .custom-btn {
+    width: 200px;
+    color: #D4ADFC;
+    background-color: #5C469C;
+    font-weight: 900;
+    font-size: 20px;
+  }
+
+  .custom-btn:hover {
+    background-color: #D4ADFC;
+    border-color: #5C469C;
+    color: #10041c;
+  }
+
+
+</style>
+{% endblock %}

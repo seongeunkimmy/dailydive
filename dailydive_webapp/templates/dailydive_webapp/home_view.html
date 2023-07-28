@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>DailyDive</title>
-  </head>
-  <body>
-    Hello world! This is DailyDive! 
-  </body>
+{% extends 'dailydive_webapp/index.html' %}
+
+
+{% block content %}
+{% load static %}
+    <!-- Content specific to this page -->
+
+<div class="bg-image">
+    <div class="d-flex flex-column position-relative z-index-2 justify-content-center align-items-center h-100">
+        <h1 class="text-white fw-bold mb-4">ARE YOU READY TO DIVE?</h1>
+        <a href="/adddiary"class="btn btn-outline-light btn-lg">DIVE</a>
+    </div>
+</div>
+
+</div>
+<style>
+    .bg-image {
+        background-color: transparent !important; 
+        position: relative;
+        background-image: url('{% static "dailydive_webapp/images/bg_image.jpg" %}') !important;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100vw;
+       
+    }
+    .bg-image::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: hsla(0, 0%, 0%, 0.6);
+    }
+</style>
+{% endblock %}
+
+
 </html>

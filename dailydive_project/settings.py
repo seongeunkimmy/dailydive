@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from . import klue_load
+
+#모델 생성
+MODEL_KLUE = klue_load.create_klue_model()
+TOKENIZER_KLUE = klue_load.load_klue_tokenizer()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap5',
     'dailydive_webapp',
     'django.contrib.admin',
     'django.contrib.auth',
