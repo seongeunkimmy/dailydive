@@ -25,12 +25,8 @@ def index(request):
 def home_view(request):
     return render(request, 'dailydive_webapp/home_view.html', {})
 
-# def solution(request):
-#     return render(request, 'dailydive_webapp/solution.html', {})
-
 def add_diary(request):
     sentence = request.POST.get('target_sentence')
-    print('add_diary sentence ', sentence)
     request.session['sentence'] = sentence
     return render(request, 'dailydive_webapp/add_diary.html',  {})
 
@@ -119,15 +115,3 @@ def solution(request):
         context = {'target_sentence':target_sentence, 'result':result, 'score': score, 'chart':chart,'act_chart': act_chart, 'selected_db_1':obj[0], 'selected_db_2':obj[1], 'selected_db_3':obj[2]}
         return render(request, 'dailydive_webapp/solution.html', context)
 
-# def klue_predict(request):
-#     target_sentence = request.POST['target_sentence']
-#     model = settings.MODEL_KLUE
-#     tokenizer = settings.TOKENIZER_KLUE
-#
-#     result, temp = inference_klue.predict_sentiment(target_sentence, tokenizer, model)
-#     print(result)
-#     chart = get_chart(temp)
-#     obj = solutions.objects.filter(sentiment=result).values()
-#     print(obj)
-#     context = {'target_sentence':target_sentence, 'result':result, 'chart':chart, 'selected_db':obj}
-#     return render(request, 'dailydive_webapp/klue_predict.html', context)

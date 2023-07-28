@@ -12,9 +12,7 @@ from matplotlib import font_manager, rc # rc == run configure(configuration file
 import seaborn as sns
 import numpy as np
 
-# # matplotlib의 한글문제를 해결
 
-# old_path = r"C:/Windows/Fonts/malgun.ttf"
 path = 'dailydive_webapp/static/dailydive_webapp/font/NanumGothic.ttf'
 font_name = font_manager.FontProperties(fname=path).get_name()
 # # font_name

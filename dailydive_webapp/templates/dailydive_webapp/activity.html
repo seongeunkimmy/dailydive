@@ -100,7 +100,6 @@
 
   submitButton.addEventListener('click', () => {
     saveCurrentAnswers();
-    console.log('Form Values:', formValues);
 
     const sleep = formValues.question_1 + formValues.text_input_1_1
     const exercise = formValues.question_2 + formValues.text_input_2_2
@@ -110,7 +109,7 @@
 
     answers = [sleep, exercise, rest, diet, sns];
 
-    // Send the answers to the server using Fetch API
+    // Send the answers to the server
     const url = "{% url 'dailydive_webapp:activity' %}";
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
@@ -125,9 +124,6 @@
       body: data,
     })
       .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      })
       .catch(error => {
         console.error('Error:', error);
       });

@@ -31,7 +31,7 @@ def predict_sentiment(sentence, tokenizer, model):
     predicted_probability = np.round(np.max(prediction) * 100, 2)
     temp = np.round(prediction * 100, 2)
     prob = np.concatenate(temp).tolist()
-    predicted_class = ['기쁨', '당황', '분노', '불안', '상처', '슬픔'][np.argmax(prediction, axis=1)[0]]
+    predicted_class = ['기쁨', '두려움', '분노', '불안', '상처', '슬픔'][np.argmax(prediction, axis=1)[0]]
     result = "{}% 확률로 {} 감정입니다.".format(predicted_probability, predicted_class)
     print(result)
 

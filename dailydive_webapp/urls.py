@@ -9,5 +9,4 @@ urlpatterns = [
     path('adddiary/', views.add_diary, name='add_diary'),
     path('activity/', views.activity, name='activity'),
 
-    # path('klue_predict/', views.klue_predict, name='klue_predict')
 ]
