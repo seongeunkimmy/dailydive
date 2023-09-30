@@ -36,15 +36,14 @@
 
 <br>
 
-![127 0 0 1_8000_](https://github.com/seongeunkimmy/dailydive/assets/63241360/21eb6b02-1d23-4d80-a9c8-90f5eb0b01f1)
+![127 0 0 1_8000_](https://github.com/seongeunkimmy/dailydive/assets/63241360/b4ef0a2d-87ab-405a-bae5-f099bce0d287)
 
-![127 0 0 1_8000_adddiary_ (1)](https://github.com/seongeunkimmy/dailydive/assets/63241360/8b1187f6-351c-449b-8830-879550551543)
+![127 0 0 1_8000_adddiary_ (1)](https://github.com/seongeunkimmy/dailydive/assets/63241360/8db8ba75-7a09-4895-95ae-e8b32fd43584)
 
-![127 0 0 1_8000_activity_](https://github.com/seongeunkimmy/dailydive/assets/63241360/7a467f47-e485-4d77-80f6-1a13dbefb085)
+![127 0 0 1_8000_activity_](https://github.com/seongeunkimmy/dailydive/assets/63241360/51d81a24-18c9-4d29-8d5a-5531fb529545)
 
+![127 0 0 1_8000_solution_ (4)](https://github.com/seongeunkimmy/dailydive/assets/63241360/152f03af-b822-437b-bca7-f7eaabe50d32)
 
-
-![127 0 0 1_8000_solution_ (4)](https://github.com/seongeunkimmy/dailydive/assets/63241360/341c9cb9-0304-4ee3-a911-a169144d375f)
 
 ## 💻 기술 스택
 
