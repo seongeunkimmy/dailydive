@@ -1,7 +1,7 @@
 # 🌊 데일리다이브 (DailyDive)
-**K-Digital Training**<br>
-구름 AI 자연어처리 과정 프로젝트 3팀 
-AI NLP(Natural Language Processing) Project 
+**AI NLP(Natural Language Processing) Project**<br>
+- K-Digital Training | 구름 AI 자연어처리 과정 프로젝트 3팀 <br>
+
 <br>
 
 ## 🔸 프로젝트 소개
@@ -35,6 +35,7 @@ AI NLP(Natural Language Processing) Project
 - 오늘 하루의 감정을 돌아보고 일기를 써서 데이터를 입력하면 AI 모델이 감정을 분석해 결과를 알려주고 그에 맞는 솔루션을 추천해 드리는 서비스
 
 <br>
+
 ![127 0 0 1_8000_](https://github.com/seongeunkimmy/dailydive/assets/63241360/21eb6b02-1d23-4d80-a9c8-90f5eb0b01f1)
 
 ![127 0 0 1_8000_adddiary_ (1)](https://github.com/seongeunkimmy/dailydive/assets/63241360/8b1187f6-351c-449b-8830-879550551543)
